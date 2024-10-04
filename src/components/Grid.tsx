@@ -1,132 +1,238 @@
-"use client"
 import React from "react";
-import DataEditor, { GridCell, GridCellKind, GridColumn, Item, Theme } from "@glideapps/glide-data-grid";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "@glideapps/glide-data-grid/dist/index.css";
+import DataEditor, {
+  GridColumn,
+  SizedGridColumn,
+  GridCell,
+  Item,
+  GridCellKind,
+  Theme,
+  useTheme,
+  HeaderClickedEventArgs,
+  Rectangle
+} from "@glideapps/glide-data-grid";
+// import {
+//   useColumnSort,
+//   useAsyncDataSource,
+//   useMoveableColumns,
+//   useCollapsingGroups
+// } from "@glideapps/glide-data-grid-source";
+import { useLayer } from "react-laag";
 
-const columns: GridColumn[] = [
-  { title: "Link", id: "link" },
-  { title: "Name", id: "name"},
-  { title: "Description", id: "description"},
-  { title: "Photo", id: "photo"},
-  { title: "Health", id: "health"},
-];
+interface DummyItem {
+  name: string;
+  company: string;
+  phone: string;
+  email: string;
+}
 
-const dataSource = [
+
+const data: DummyItem[] = [
   {
-    key: '1',
-    link: 'www.google.com',
-    name: 'Google',
-    description: 'The world\'s most popular search engine.',
-    photo: 'https://picsum.photos/1080',
-    health: '90%'
+    name: "Deidre Morris",
+    company: "GONKLE",
+    email: "deidremorris@gonkle.com",
+    phone: "+1 (867) 507-3332"
   },
   {
-    key: '2',
-    link: 'www.youtube.com',
-    name: 'YouTube',
-    description: 'A platform for watching and sharing videos.',
-    photo: 'https://picsum.photos/1081',
-    health: '85%'
+    name: "Sheryl Craig",
+    company: "EVENTAGE",
+    email: "sherylcraig@eventage.com",
+    phone: "+1 (869) 520-2227"
   },
   {
-    key: '3',
-    link: 'www.github.com',
-    name: 'GitHub',
-    description: 'A platform for hosting and collaborating on software projects.',
-    photo: 'https://picsum.photos/1082',
-    health: '98%'
+    name: "Lidia Bowers",
+    company: "ANOCHA",
+    email: "lidiabowers@anocha.com",
+    phone: "+1 (808) 414-3826"
   },
   {
-    key: '4',
-    link: 'www.stackoverflow.com',
-    name: 'Stack Overflow',
-    description: 'A question and answer site for programmers.',
-    photo: 'https://picsum.photos/1083',
-    health: '92%'
+    name: "Jones Norton",
+    company: "REPETWIRE",
+    email: "jonesnorton@repetwire.com",
+    phone: "+1 (875) 582-3320"
   },
   {
-    key: '5',
-    link: 'www.apple.com',
-    name: 'Apple',
-    description: 'A leading technology company known for its iPhones and Macs.',
-    photo: 'https://picsum.photos/1043',
-    health: '88%'
+    name: "Lula Bruce",
+    company: "COMDOM",
+    email: "lulabruce@comdom.com",
+    phone: "+1 (873) 452-2472"
   },
-];
-
-const customTheme: Partial<Theme> = {
-    bgCell: "#1F2937", // Tailwind's gray-800
-    bgHeader: "#111827", // Tailwind's gray-900
-    bgHeaderHasFocus: "#374151", // Tailwind's gray-700
-    bgHeaderHovered: "#4B5563", // Tailwind's gray-600
-    textDark: "#F9FAFB", // Tailwind's gray-50
-    textMedium: "#E5E7EB", // Tailwind's gray-200
-    textLight: "#D1D5DB", // Tailwind's gray-300
-    borderColor: "#4B5563", // Tailwind's gray-600
-    accentColor: "#3B82F6", // Tailwind's blue-500
-    accentLight: "#60A5FA", // Tailwind's blue-400
-  };
-
-export default function Grid() {
-  function getData([col, row]: Item): GridCell {
-    const item = dataSource[row];
-    if (!item) return { kind: GridCellKind.Text, data: "", displayData: "", allowOverlay: false };
-
-    switch (col) {
-      case 0:
-        return {
-          kind: GridCellKind.Uri,
-          data: item.link,
-          allowOverlay: false,
-          displayData: item.link,
-        };
-      case 1:
-        return {
-          kind: GridCellKind.Text,
-          data: item.name,
-          allowOverlay: false,
-          displayData: item.name,
-        };
-      case 2:
-        return {
-          kind: GridCellKind.Text,
-          data: item.description,
-          allowOverlay: false,
-          displayData: item.description,
-        };
-      case 3:
-        return {
-          kind: GridCellKind.Image,
-          data: [item.photo],
-          allowOverlay: false,
-          displayData: [item.photo],
-        };
-      case 4:
-        return {
-          kind: GridCellKind.Text,
-          data: item.health,
-          allowOverlay: false,
-          displayData: item.health,
-        };
-      default:
-        throw new Error(`Invalid column index: ${col}`);
-    }
+  {
+    name: "Larsen Montgomery",
+    company: "SQUISH",
+    email: "larsenmontgomery@squish.com",
+    phone: "+1 (893) 482-3651"
+  },
+  {
+    name: "Becky Bright",
+    company: "COMCUR",
+    email: "beckybright@comcur.com",
+    phone: "+1 (879) 494-2331"
+  },
+  {
+    name: "Charlotte Rowland",
+    company: "FROLIX",
+    email: "charlotterowland@frolix.com",
+    phone: "+1 (861) 439-2134"
+  },
+  {
+    name: "Sonya Hensley",
+    company: "GEEKETRON",
+    email: "sonyahensley@geeketron.com",
+    phone: "+1 (802) 553-2194"
+  },
+  {
+    name: "Stephenson Guthrie",
+    company: "EXOSWITCH",
+    email: "stephensonguthrie@exoswitch.com",
+    phone: "+1 (903) 449-3271"
+  },
+  {
+    name: "Mcmillan Cline",
+    company: "TURNLING",
+    email: "mcmillancline@turnling.com",
+    phone: "+1 (982) 496-2454"
+  },
+  {
+    name: "Kemp Davis",
+    company: "TETRATREX",
+    email: "kempdavis@tetratrex.com",
+    phone: "+1 (859) 594-2982"
+  },
+  {
+    name: "Matilda Levy",
+    company: "SLOFAST",
+    email: "matildalevy@slofast.com",
+    phone: "+1 (841) 521-2444"
+  },
+  {
+    name: "Hattie Simpson",
+    company: "COMTRAK",
+    email: "hattiesimpson@comtrak.com",
+    phone: "+1 (962) 587-3805"
+  },
+  {
+    name: "Kinney Munoz",
+    company: "IDETICA",
+    email: "kinneymunoz@idetica.com",
+    phone: "+1 (921) 513-2012"
+  },
+  {
+    name: "Lambert Raymond",
+    company: "TURNABOUT",
+    email: "lambertraymond@turnabout.com",
+    phone: "+1 (919) 519-2442"
+  },
+  {
+    name: "Bryant Dunlap",
+    company: "BYTREX",
+    email: "bryantdunlap@bytrex.com",
+    phone: "+1 (872) 583-2883"
   }
+];
 
+function App() {
+  const getContent = React.useCallback((cell: Item): GridCell => {
+    const [col, row] = cell;
+    const dataRow = data[row];
+    const indexes: (keyof DummyItem)[] = ["name", "company", "email", "phone"];
+    const d = dataRow[indexes[col]];
+    return {
+      kind: GridCellKind.Text,
+      allowOverlay: true,
+      displayData: d,
+      data: d
+    };
+  }, []);
+  const columns = React.useMemo<GridColumn[]>(() => {
+    return [
+      {
+        title: "Name",
+        id: "name",
+        hasMenu: true
+      },
+      {
+        title: "Company",
+        id: "company",
+        hasMenu: true
+      },
+      {
+        title: "Email",
+        id: "email",
+        hasMenu: true
+      },
+      {
+        title: "Phone",
+        id: "phone",
+        hasMenu: true
+      }
+    ];
+  }, []);
+  const [showMenu, setShowMenu] = React.useState<{
+    bounds: Rectangle;
+    col: number;
+  }>();
+
+  const onHeaderMenuClickedStage2 = React.useCallback(
+    (col: number, bounds: Rectangle) => {
+      setShowMenu({ col, bounds });
+    },
+    []
+  );
+
+  const { renderLayer, layerProps } = useLayer({
+    isOpen: showMenu !== undefined,
+    triggerOffset: 4,
+    onOutsideClick: () => {
+      console.log("onOutsideClick");
+      setShowMenu(undefined);
+    },
+    trigger: {
+      getBounds: () => ({
+        bottom: (showMenu?.bounds.y ?? 0) + (showMenu?.bounds.height ?? 0),
+        height: showMenu?.bounds.height ?? 0,
+        left: showMenu?.bounds.x ?? 0,
+        right: (showMenu?.bounds.x ?? 0) + (showMenu?.bounds.width ?? 0),
+        top: showMenu?.bounds.y ?? 0,
+        width: showMenu?.bounds.width ?? 0
+      })
+    },
+    placement: "bottom-start",
+    auto: true,
+    possiblePlacements: ["bottom-start", "bottom-end"]
+  });
   return (
-    <div className="p-4 bg-gray-900 min-h-screen">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold text-white">Data Grid Example</h1>
-      </div>
-      <div className="border border-gray-700 rounded-lg overflow-hidden">
-        <DataEditor
-          getCellContent={getData}
-          columns={columns}
-          rows={dataSource.length}
-          theme={customTheme}
-          className="w-full h-full"
-        />
-      </div>
+    <div className="App">
+      <DataEditor
+        getCellContent={getContent}
+        columns={columns}
+        rows={data.length}
+        onHeaderMenuClick={onHeaderMenuClickedStage2}
+      />
+      {showMenu !== undefined &&
+        renderLayer(
+          <div
+            {...layerProps}
+            style={{
+              ...layerProps.style,
+              width: 300,
+              padding: 4,
+              borderRadius: 8,
+              backgroundColor: "white",
+              border: "1px solid black"
+            }}
+          >
+            <ul>
+              <li>Item 1</li>
+              <li>Item 2</li>
+              <li>Item 3</li>
+            </ul>
+          </div>
+        )}
     </div>
   );
 }
+
+export default App;

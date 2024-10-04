@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import "@glideapps/glide-data-grid/dist/index.css";
 
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <div id="portal" />
       </body>
     </html>
   );
