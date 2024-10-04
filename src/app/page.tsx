@@ -1,101 +1,217 @@
+"use client"
 import Image from "next/image";
+import { Table, Tag } from "antd";
+import type { TableColumnsType, TableProps } from "antd";
+import { useEffect } from 'react';
+
+interface DataType {
+  name: string;
+  url: string;
+  logo: string;
+  category: string;
+  tags: string[];
+  description: string;
+}
+
+const columns: TableColumnsType<DataType> = [
+  {
+    title: "Logo",
+    dataIndex: "logo",
+    render: (text: string) => (
+      <Image
+        src={text}
+        alt="Image"
+        width={50}
+        height={50}
+        className="rounded-full"
+      />
+    ),
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    render: (text: string) => <h1 className="font-semibold">{text}</h1>
+  },
+  {
+    title: "URL",
+    dataIndex: "url",
+    render: (text: string) => <a className="underline text-blue-500">{text}</a>,
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+  },
+  {
+    title: "Tags",
+    dataIndex: "tags",
+    render: (_: any, { tags }: any) => (
+      <>
+        {tags.map((tag: any) => {
+          let color = tag.length < 7 ? "blue" : tag.length>7? "green": "yellow";
+          if (tag === "software") {
+            color = "volcano";
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
+    ),
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+  },
+];
+
+const data: DataType[] = [
+  {
+    name: "Google",
+    url: "www.google.com",
+    logo: "https://picsum.photos/1080",
+    category: "Technology",
+    tags: ["search engine", "internet", "software"],
+    description: "A global technology company specializing in search, cloud computing, advertising technologies, and other internet-related products and services."
+  },
+  {
+    name: "Amazon",
+    url: "www.amazon.com",
+    logo: "https://picsum.photos/1081",
+    category: "E-commerce",
+    tags: ["retail", "online shopping", "marketplace"],
+    description: "An American multinational technology company that focuses on e-commerce, cloud computing, artificial intelligence, and digital streaming."
+  },
+  {
+    name: "Netflix",
+    url: "www.netflix.com",
+    logo: "https://picsum.photos/1082",
+    category: "Entertainment",
+    tags: ["streaming", "movies", "TV shows"],
+    description: "A global streaming service offering a wide variety of TV shows, movies, documentaries, and anime."
+  },
+  {
+    name: "Microsoft",
+    url: "www.microsoft.com",
+    logo: "https://picsum.photos/1083",
+    category: "Technology",
+    tags: ["software", "operating systems", "cloud computing"],
+    description: "An American multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and services."
+  },
+  {
+    name: "Apple",
+    url: "www.apple.com",
+    logo: "https://picsum.photos/1084",
+    category: "Technology",
+    tags: ["hardware", "software", "electronics"],
+    description: "An American multinational technology company that designs, develops, manufactures, and sells consumer electronics, computer software, and online services."
+  },
+  {
+    name: "Facebook",
+    url: "www.facebook.com",
+    logo: "https://picsum.photos/1085",
+    category: "Social Media",
+    tags: ["networking", "communication", "social platform"],
+    description: "A social networking service and website that allows users to create profiles, share photos and videos, and connect with friends and family."
+  },
+  {
+    name: "Tesla",
+    url: "www.tesla.com",
+    logo: "https://picsum.photos/1086",
+    category: "Automotive",
+    tags: ["electric vehicles", "technology", "innovation"],
+    description: "An American electric vehicle and clean energy company."
+  },
+  {
+    name: "Spotify",
+    url: "www.spotify.com",
+    logo: "https://picsum.photos/1087",
+    category: "Entertainment",
+    tags: ["music streaming", "podcasts", "audio"],
+    description: "A digital music service that provides on-demand access to millions of songs from thousands of artists."
+  },
+  {
+    name: "LinkedIn",
+    url: "www.linkedin.com",
+    logo: "https://picsum.photos/1088",
+    category: "Professional Networking",
+    tags: ["jobs", "career", "networking"],
+    description: "A professional networking service that helps people find jobs, build their professional networks, and discover insights."
+  },
+  {
+    name: "Twitter",
+    url: "www.twitter.com",
+    logo: "https://picsum.photos/1089",
+    category: "Social Media",
+    tags: ["microblogging", "news", "social platform"],
+    description: "A social networking and microblogging service that allows users to post and interact with short messages known as 'tweets'."
+  },
+  {
+    name: "Instagram",
+    url: "www.instagram.com",
+    logo: "https://picsum.photos/1090",
+    category: "Social Media",
+    tags: ["photo sharing", "video sharing", "social platform"],
+    description: "A social networking service and online photo sharing platform."
+  },
+  {
+    name: "TikTok",
+    url: "www.tiktok.com",
+    logo: "https://picsum.photos/1091",
+    category: "Social Media",
+    tags: ["video sharing", "short-form video", "social platform"],
+    description: "A social media platform for creating and sharing short videos."
+  }
+];
+
+const onChange: TableProps<DataType>["onChange"] = (
+  pagination,
+  filters,
+  sorter,
+  extra
+) => {
+  console.log("params", pagination, filters, sorter, extra);
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  useEffect(() => {
+    // Apply styles that override Ant Design's default styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .ant-table-thead > tr > th {
+        background-color: #212121 !important;
+        color: #b9b9b9 !important;  /* text-red-500 */
+        padding: 15px !important;
+        border-bottom: none !important;
+      }
+      .ant-table-thead > tr > th::before {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  return (
+    <div className="p-5 min-h-screen w-full bg-gradient-to-br from-blue-800 to-indigo-800">
+      <Table<DataType>
+        columns={columns}
+        dataSource={data}
+        onChange={onChange}
+        className="[&_.ant-table-cell]:!py-2 [&_.ant-table-cell]:!px-4"
+        rowClassName={() => "hover:!bg-blue-300"}
+        components={{
+          body: {
+            cell: (props:any) => (
+              <td {...props} className="!text-white !bg-[#17161b] !border-gray-500 border !px-5" />
+            ),
+          },
+        }}
+      />
     </div>
   );
 }

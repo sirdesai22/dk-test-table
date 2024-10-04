@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "@glideapps/glide-data-grid/dist/index.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
